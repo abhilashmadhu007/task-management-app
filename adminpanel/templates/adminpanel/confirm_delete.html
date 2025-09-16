@@ -1,0 +1,14 @@
+{% extends "adminpanel/base.html" %}
+{% block title %}Confirm Delete{% endblock %}
+{% block content %}
+<h2 class="mb-3">Confirm Delete</h2>
+
+<div class="card p-3 shadow">
+  <p>Are you sure you want to delete: <strong>{{ object.title|default:object.username }}</strong> ?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger">Yes, delete</button>
+    <a class="btn btn-secondary" href="javascript:history.back()">Cancel</a>
+  </form>
+</div>
+{% endblock %}

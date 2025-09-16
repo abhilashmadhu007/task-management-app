@@ -1,0 +1,44 @@
+{% extends "adminpanel/base.html" %}
+{% block title %}SuperAdmin Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-3">SuperAdmin Dashboard</h2>
+
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary shadow">
+      <div class="card-body">
+        <h5 class="card-title">Manage Users</h5>
+        <p class="card-text">Create, delete, assign roles, and assign users to admins.</p>
+        <a href="{% url 'manage_users' %}" class="btn btn-light btn-sm">Go</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success shadow">
+      <div class="card-body">
+        <h5 class="card-title">Manage Admins</h5>
+        <p class="card-text">Create, delete, and manage Admin accounts.</p>
+        <a href="{% url 'manage_admins' %}" class="btn btn-light btn-sm">Go</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning shadow">
+      <div class="card-body">
+        <h5 class="card-title">Manage Tasks</h5>
+        <p class="card-text">View and manage all tasks across users.</p>
+        <a href="{% url 'manage_tasks' %}" class="btn btn-light btn-sm">Go</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-dark shadow">
+      <div class="card-body">
+        <h5 class="card-title">Task Reports</h5>
+        <p class="card-text">View reports submitted by users.</p>
+        <a href="{% url 'task_reports' %}" class="btn btn-light btn-sm">Go</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "adminpanel/base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+{% if messages %}{% for msg in messages %}<div class="alert alert-{{ msg.tags }}">{{ msg }}</div>{% endfor %}{% endif %}
+
+<h2 class="mb-3">Admin Dashboard</h2>
+
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card shadow">
+      <div class="card-body">
+        <h5 class="card-title">My Users</h5>
+        <p class="card-text">{{ users_count }} users assigned to you</p>
+        <a href="{% url 'user_list' %}" class="btn btn-primary btn-sm">View Users</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow">
+      <div class="card-body">
+        <h5 class="card-title">My Tasks</h5>
+        <p class="card-text">{{ tasks_count }} tasks</p>
+        <a href="{% url 'task_list' %}" class="btn btn-success btn-sm">Manage Tasks</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow">
+      <div class="card-body">
+        <h5 class="card-title">Pending</h5>
+        <p class="card-text">{{ pending_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card shadow">
+      <div class="card-body">
+        <h5 class="card-title">Completed</h5>
+        <p class="card-text">{{ completed_count }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

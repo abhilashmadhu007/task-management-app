@@ -1,0 +1,47 @@
+{% extends "adminpanel/base.html" %}
+{% block title %}My Users{% endblock %}
+{% block content %}
+{% if messages %}{% for msg in messages %}<div class="alert alert-{{ msg.tags }}">{{ msg }}</div>{% endfor %}{% endif %}
+
+<h2 class="mb-3">My Users</h2>
+
+<!-- Create User (assigned to this admin automatically) -->
+<form method="post" class="card p-3 mb-4 shadow">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="create">
+  <div class="row g-2">
+    <div class="col-md-3"><input type="text" name="username" placeholder="Username" class="form-control" required></div>
+    <div class="col-md-3"><input type="email" name="email" placeholder="Email" class="form-control"></div>
+    <div class="col-md-3"><input type="password" name="password" placeholder="Password" class="form-control" required></div>
+    <div class="col-md-3"><button class="btn btn-primary w-100">Create User</button></div>
+  </div>
+</form>
+
+<!-- Users Table -->
+<table class="table table-striped shadow">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th><th>Username</th><th>Email</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="user_id" value="{{ user.id }}">
+          <button class="btn btn-danger btn-sm" onclick="return confirm('Delete user?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4" class="text-center">No users assigned to you yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

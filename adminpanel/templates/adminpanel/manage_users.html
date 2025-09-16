@@ -1,0 +1,78 @@
+{% extends "adminpanel/base.html" %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+<h2 class="mb-3">Manage Users</h2>
+
+<!-- Create User -->
+<form method="post" class="card p-3 mb-4 shadow">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="create">
+  <div class="row g-2">
+    <div class="col"><input type="text" name="username" placeholder="Username" class="form-control" required></div>
+    <div class="col"><input type="email" name="email" placeholder="Email" class="form-control"></div>
+    <div class="col"><input type="password" name="password" placeholder="Password" class="form-control" required></div>
+    <div class="col">
+      <select name="role" class="form-select">
+        <option value="User">User</option>
+        <option value="Admin">Admin</option>
+      </select>
+    </div>
+    <div class="col"><button class="btn btn-primary">Create</button></div>
+  </div>
+</form>
+
+<!-- User Table -->
+<table class="table table-striped shadow">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Assigned Admin</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>{% if user.assigned_admin %}{{ user.assigned_admin.username }}{% else %}-{% endif %}</td>
+      <td>
+        <!-- Delete -->
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="user_id" value="{{ user.id }}">
+          <button class="btn btn-danger btn-sm">Delete</button>
+        </form>
+
+        <!-- Assign Role -->
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="assign_role">
+          <input type="hidden" name="user_id" value="{{ user.id }}">
+          <select name="role" onchange="this.form.submit()" class="form-select form-select-sm d-inline w-auto">
+            <option {% if user.role == "User" %}selected{% endif %}>User</option>
+            <option {% if user.role == "Admin" %}selected{% endif %}>Admin</option>
+          </select>
+        </form>
+
+        <!-- Assign Admin -->
+        {% if user.role == "User" %}
+        <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="assign_admin">
+          <input type="hidden" name="user_id" value="{{ user.id }}">
+          <select name="admin_id" onchange="this.form.submit()" class="form-select form-select-sm d-inline w-auto">
+            <option value="">-- Assign Admin --</option>
+            {% for admin in admins %}
+            <option value="{{ admin.id }}" {% if user.assigned_admin and user.assigned_admin.id == admin.id %}selected{% endif %}>{{ admin.username }}</option>
+            {% endfor %}
+          </select>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
